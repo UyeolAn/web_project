@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Nanum+Pen+Script&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+#container {
+  width: 960px;
+  margin: 0 auto;
+  color: white;
+  font-family: 'Bagel Fat One', cursive;
+  text-shadow: 2px 2px 0px black;
+}
+
+header {
+  height: 75px;
+  padding: 10px;
+  background-color: #699be7;
+  border-radius: 10px 10px 10px 10px;
+  overflow: hidden;
+}
+
+header>h1 {
+  margin: 0;
+  font-weight: lighter;
+  display: inline-block;
+}
+
+header>h1:hover {
+  color: rgb(199, 242, 253);
+}
+
+nav {
+  padding-right: 40px;
+  float: right;
+}
+
+nav>ul {
+  margin: 0;
+}
+
+nav>ul>li {
+  margin: 10px 20px;
+  padding: 5px 10px;
+  display: inline-block;
+}
+
+nav>ul>li>a {
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+}
+
+nav>ul>.menu:hover {
+  border-bottom: 3px solid rgb(199, 242, 253);
+  border-radius: 10px;
+}
+
+nav>ul>.menu:hover>a {
+  color: rgb(199, 242, 253);
+}
+
+.showname {
+  height:24px;
+}
+
+.showname>p {
+  margin: 0;
+  color: aquamarine;
+  font-size: 15px;
+}

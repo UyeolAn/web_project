@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.uyeol.prjdb.notice.map.NoticeMapper">
+	
+	<select id="noticeSelectList" resultType="co.uyeol.prjdb.notice.vo.NoticeVO">
+		SELET *
+		FROM notice
+		<if test="key == 'title'">
+			WHERE notice_title LIKE '%' || #{val} || '%'  
+		</if>
+		<if test="key == 'subject'">
+			WHERE notice_title LIKE '%' || #{val} || '%'  
+		</if>
+		<if test="key == 'writer'">
+			WHERE notice_title LIKE '%' || #{val} || '%'  
+		</if>
+	</select>
+	
+	<select id="noticeSelect" resultType="co.uyeol.prjdb.notice.vo.NoticeVO">
+	 	SELECT *
+	 	FROM notice
+	 	WHERE notice_id = #{noticeId}
+	</select>
+	
+	<insert id="noticeInsert">
+		<selectKey keyProperty="id" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(notice_id), 1) + 1 as id
+			FROM notice
+		</selectKey>
+		INSERT INTO notice
+		VALUES (#{id}, #{memberWriterId}, #{noticeTitle}, #{noticeSubject},
+				SYSDATE, 0, #{noticeAttach}, #{noticeImg}, #{noticeWriterName})
+	</insert>
+	
+	<update id="noticeUpdate"></update>
+	
+	<delete id="noticeDelete"></delete>
+	
+	<update id="noticeHitUpdate" parameterType="int">
+		UPDATE notice
+		SET notice_hit = notice_hit + 1
+		WHERE notice_id = #{id}
+	</update>
+
+</mapper>
