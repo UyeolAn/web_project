@@ -9,10 +9,10 @@
 			WHERE notice_title LIKE '%' || #{val} || '%'  
 		</if>
 		<if test="key == 'subject'">
-			WHERE notice_title LIKE '%' || #{val} || '%'  
+			WHERE notice_subject LIKE '%' || #{val} || '%'  
 		</if>
 		<if test="key == 'writer'">
-			WHERE notice_title LIKE '%' || #{val} || '%'  
+			WHERE notice_writer LIKE '%' || #{val} || '%'  
 		</if>
 	</select>
 	

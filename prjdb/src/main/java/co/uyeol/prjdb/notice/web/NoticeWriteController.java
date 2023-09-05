@@ -33,7 +33,6 @@ public class NoticeWriteController extends HttpServlet {
 		NoticeVO vo = new NoticeVO();
 		
 		// 파일 업로드 처리
-		System.out.println(getServletContext().getRealPath("attach/notice"));
 		String saveDir = getServletContext().getRealPath("attach/notice");
 		int maxSize = 1024 * 1024 * 100; // 100MB
 		
@@ -51,9 +50,14 @@ public class NoticeWriteController extends HttpServlet {
 		
 //		// 썸네일 처리
 //		ThumbNail thunbNail = new ThumbNail();
-//		String filePath = saveDir + File.separator + imgFileName;
-//		String fileExt = imgFileName.substring(imgFileName.lastIndexOf("."));
-//		String thumb = thunbNail.makeThumbNail(saveDir, imgFileName, fileExt);
+//		int fileNameIdx = imgFileName.lastIndexOf(".");
+//		String fileExt = imgFileName.substring(fileNameIdx + 1);
+//		try {
+//			thunbNail.makeThumbNail(saveDir, imgFileName, fileExt);
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 		// 나머지 속성도 세팅해줌
 		vo.setNoticeWriterId(multi.getParameter("noticeWriterId"));

@@ -41,8 +41,8 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
-	public List<NoticeVO> noticeSelectList(String key, String value) {
-		return map.noticeSelectList(key, value);
+	public List<NoticeVO> noticeSelectList(String key, String val) {
+		return map.noticeSelectList(key, val);
 	}
 
 	@Override

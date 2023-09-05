@@ -19,7 +19,7 @@ public interface NoticeMapper {
 	int noticeDelete(NoticeVO vo);
 	
 	
-	List<NoticeVO> noticeSelectList(@Param("key") String key, @Param("value") String value); // 게시글 검색
+	List<NoticeVO> noticeSelectList(@Param("key") String key, @Param("val") String val); // 게시글 검색
 
 	void noticeHitUpdate(int id); // 조회수 증가
 

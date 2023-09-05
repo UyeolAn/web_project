@@ -15,7 +15,7 @@
         <h2>게시글 목록</h2>
       </div>
       <div>
-        <form action="" method="post">
+        <form id="searchfrm" method="post">
           <table border="1">
             <tr><td>
               <label for="key">Choose a key:</label>
@@ -31,7 +31,7 @@
         </form>
       </div><br>
       <div>
-        <table border="1">
+        <table id="listtable" border="1">
           <thead>
             <tr>
               <th width="50">순번</th>
@@ -43,7 +43,7 @@
               <th width="100">첨부파일</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="tlist">
             <c:choose>
               <c:when test="${empty notices}">
                 <tr>
@@ -52,10 +52,12 @@
               </c:when>
               <c:otherwise>
                 <c:forEach var="n" items="${notices}">
-                  <tr>
+                  <tr onmouseover="this.style.background='#C8FE2E'"
+                      onmouseout="this.style.background='#FFFFFF'"
+                      onclick="noticeSelect('${n.noticeId}')">
                     <td align="center">${n.noticeId}</td>
                     <td align="center">
-                      <img src="attach/notice/${n.noticeImg}" alt="이미지">
+                      <img src="attach/notice/${n.noticeImg}" alt="이미지" style="width:100px;height:70px;">
                     </td>
                     <td>${n.noticeTitle}</td>
                     <td align="center">${n.noticeWriterName}</td>
@@ -73,8 +75,67 @@
         <c:if test="${not empty id}">
           <button type="button" onclick="location.href='noticewriterform.do'">글쓰기</button>
         </c:if>
+        <form id="selectfrm" action="noticeselect.do" method="post">
+          <input type="hidden" id="noticeId" name="noticeId">
+        </form>
       </div>
     </div>
+    <script type="text/javascript">
+      function noticeSelect(id) {
+        let form = document.getElementById("selectfrm");
+        form.noticeId.value = id;
+        form.submit();
+      }
+
+      function searchList() {
+        let form = document.getElementById("searchfrm");
+
+        let key = form.key.value;
+        let val = form.val.value;
+
+        let payload = "key=" + key + "&val=" + val;
+        let url = "ajaxnoticesearch.do"
+        
+        // ajax POST 방식
+        fetch(url, {
+          method: "POST",
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+          body: payload
+        }).then(response => response.json())
+          .then(json => htmlViews(json));
+      }
+
+      function htmlViews(datas) {
+        document.querySelector('#tlist').remove(); // 일단 목록을 전부 지움
+
+        const tbody = document.createElement('tbody'); // 그리고 검색 결과를 담아줄 tbody 생성
+        tbody.setAttribute("id", "tlist"); // id값도 지정해줌
+        tbody.innerHTML = datas.map(data => htmlConvert(data)).join('');
+
+        document.querySelector('#listtable').appendChild(tbody); // 만들어놓은 tbody를 붙임
+      }
+
+      function htmlConvert(n) {
+        if(n.noticeAttach == null) {
+          n.noticeAttach = '';
+        }
+        return `
+          <tr onmouseover="this.style.background='#C8FE2E'"
+              onmouseout="this.style.background='#FFFFFF'"
+              onclick="noticeSelect('\${n.noticeId}')">
+            <td align="center">\${n.noticeId}</td>
+            <td align="center">
+              <img src="attach/notice/\${n.noticeImg}" alt="이미지" style="width:100px;height:70px;">
+            </td>
+            <td>\${n.noticeTitle}</td>
+            <td align="center">\${n.noticeWriterName}</td>
+            <td align="center">\${n.noticeDate}</td>
+            <td align="center">\${n.noticeHit}</td>
+            <td align="center">\${n.noticeAttach}</td>
+          </tr>
+        `
+      }
+    </script>
   </body>
 
   </html>
