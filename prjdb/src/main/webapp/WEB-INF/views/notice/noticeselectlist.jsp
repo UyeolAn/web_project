@@ -44,17 +44,35 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
+            <c:choose>
+              <c:when test="${empty notices}">
+                <tr>
+                  <td colspan="7" align="center">게시글이 없습니다..</td>
+                </tr>
+              </c:when>
+              <c:otherwise>
+                <c:forEach var="n" items="${notices}">
+                  <tr>
+                    <td align="center">${n.noticeId}</td>
+                    <td align="center">
+                      <img src="attach/notice/${n.noticeImg}" alt="이미지">
+                    </td>
+                    <td>${n.noticeTitle}</td>
+                    <td align="center">${n.noticeWriterName}</td>
+                    <td align="center">${n.noticeDate}</td>
+                    <td align="center">${n.noticeHit}</td>
+                    <td align="center">${n.noticeAttach}</td>
+                  </tr>
+                </c:forEach>
+              </c:otherwise>
+            </c:choose>
           </tbody>
         </table>
+      </div><br>
+      <div>
+        <c:if test="${not empty id}">
+          <button type="button" onclick="location.href='noticewriterform.do'">글쓰기</button>
+        </c:if>
       </div>
     </div>
   </body>

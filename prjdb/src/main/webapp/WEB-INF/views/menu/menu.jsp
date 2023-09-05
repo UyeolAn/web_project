@@ -16,6 +16,7 @@
         <h1>홈 가 기</h1>
         <nav>
           <ul>
+          	<li class="menu"><a href="noticeselectlist.do">게시글목록</a></li>
             <c:if test="${empty id}">
               <li class="menu"><a href="memberloginform.do">로그인</a></li>
               <li class="menu"><a href="memberjoinform.do">회원가입</a></li>

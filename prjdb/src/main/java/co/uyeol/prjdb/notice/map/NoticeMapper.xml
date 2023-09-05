@@ -3,7 +3,7 @@
 <mapper namespace="co.uyeol.prjdb.notice.map.NoticeMapper">
 	
 	<select id="noticeSelectList" resultType="co.uyeol.prjdb.notice.vo.NoticeVO">
-		SELET *
+		SELECT *
 		FROM notice
 		<if test="key == 'title'">
 			WHERE notice_title LIKE '%' || #{val} || '%'  
@@ -23,13 +23,13 @@
 	</select>
 	
 	<insert id="noticeInsert">
-		<selectKey keyProperty="id" resultType="int" order="BEFORE">
-			SELECT NVL(MAX(notice_id), 1) + 1 as id
+		<selectKey keyProperty="noticeId" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(notice_id), 0) + 1 as id
 			FROM notice
 		</selectKey>
 		INSERT INTO notice
-		VALUES (#{id}, #{memberWriterId}, #{noticeTitle}, #{noticeSubject},
-				SYSDATE, 0, #{noticeAttach}, #{noticeImg}, #{noticeWriterName})
+		VALUES (#{noticeId}, #{noticeWriterId}, #{noticeTitle}, #{noticeSubject},
+				SYSDATE, 0, #{noticeAttach}, #{noticeImg}, #{noticeWriterName}, null)
 	</insert>
 	
 	<update id="noticeUpdate"></update>

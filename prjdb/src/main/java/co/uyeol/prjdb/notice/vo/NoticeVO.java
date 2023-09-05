@@ -27,4 +27,6 @@ public class NoticeVO {
 	
 	private String noticeWriterName;
 	
+	private String noticeThumb;
+	
 }

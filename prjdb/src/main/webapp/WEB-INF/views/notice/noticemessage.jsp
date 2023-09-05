@@ -9,13 +9,7 @@
 
   <body>
     <div align="center">
-      <jsp:include page="../menu/menu.jsp" />
-      <div>
-        <h1>WellCome to My Home!!</h1>
-      </div>
-      <div>
-      	<img alt="이미지" src="img/강아지.png">
-      </div>
+      <h1>${message}</h1>
     </div>
   </body>
 

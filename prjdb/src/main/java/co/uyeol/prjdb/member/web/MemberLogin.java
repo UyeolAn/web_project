@@ -27,7 +27,7 @@ public class MemberLogin extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		MemberService memberService = new MemberServiceImpl();
 		HttpSession session = request.getSession(); //세션객체 호출
-		System.out.println(request.getParameter("memberId"));
+
 		MemberVO targetVO = new MemberVO();
 		targetVO.setMemberId(request.getParameter("memberId"));
 		targetVO.setMemberPassword(Sha256.encrypt(request.getParameter("memberPassword")));
