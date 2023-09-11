@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Insert title here</title>
+</head>
+
+<body>
+  <h3>Asynchronous Javascript And Xml</h3>
+ 	<ul id="list">
+    <li>first + last</li>
+  </ul>
+  <script>
+    // json -> javascript object : JSON.parse()
+    // javascript object -> json : JSON.stringify()
+    let json = `[{"name": "안우열", "age": 25}, {"name": "김륜형", "age": 25}]`;
+    console.log(json);
+    let obj = JSON.parse(json);
+    console.log(obj[0]);
+    let str = JSON.stringify(obj);
+    console.log(str);
+
+    let ajx = new XMLHttpRequest();
+    ajx.open("get", "../ajaxreplylist.do");
+    ajx.send();
+    ajx.onload = getReply;
+
+    function getXML() {
+      let xml = ajx.responseXML;
+      let records = xml.getElementsByTagName("record");
+      for (let record of records) {
+        let li = document.createElement("li");
+        li.innerText = record.children[1].innerHTML + " " + record.children[2].innerHTML;
+        document.getElementById("list").appendChild(li);
+      }
+    }
+
+    function getJson() {
+      let datas = JSON.parse(ajx.responseText);
+      for (let data of datas) {
+        let li = document.createElement("li");
+        li.innerText = data["first_name"] + " " + data["last_name"];
+        document.getElementById("list").appendChild(li);
+      }
+    }
+
+    function getReply() {
+      console.log(ajx.responseText);
+    }
+  </script>
+</body>
+
+</html>

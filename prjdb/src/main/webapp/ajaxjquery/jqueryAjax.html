@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Insert title here</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+</head>
+
+<body>
+  <div id="show"></div>
+  <div class="reply">
+    <input type="text" id="replyWriter">
+    <input type="text" id="replySubject">
+    <button id="addBtn">전송</button>
+  </div>
+  <script>
+    $.ajax({
+      url: 'dataset.xml',
+      method: 'get', // defalut: get
+      success: function (res) {
+        console.log(res);
+        let records = $(res).find('record');
+        console.log(records);
+        for (record of records) {
+          $('<p />')
+            .text(record.children[1].innerHTML + ', ' + record.children[2].innerHTML)
+            .appendTo('#show');
+        }
+      },
+      error: function(err) {
+        console.log(err);
+      }
+    });
+
+    $('#addBtn').on('click', function (e) {
+      $.ajax({
+        url: '../ajaxreplyadd.do',
+        method: 'post',
+        data: {noticeId: 2, replyWriter: 'uuser1', replySubject: 'test'},
+        success: function (e) {
+          console.log(e);
+        },
+        error: function(err) {
+          console.log(err);
+        }
+      });
+    });
+
+
+  </script>
+</body>
+
+</html>

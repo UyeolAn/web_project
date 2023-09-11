@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Insert title here</title>
+  <style>
+    .outer {
+      width: 390px;
+      background-color: aquamarine;
+    }
+
+    .outer>span {
+      display: inline-block;
+      width: 80px;
+      margin: 1px;
+      padding: 2px;
+      border: 1px solid black;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div align="center">
+    <div>
+      <input type="text" class="userValue" disabled>
+      <button id="delBtn" disabled>입력</button>
+      <button id="startBtn">시작</button>
+    </div>
+    <br>
+    <div class="outer">
+    </div>
+    <div>
+      <h3>남은 시간 : <span class="timer">60</span>초</h3>
+      <h3>남은 단어 : <span class="leftWord">00</span>개</h3>
+    </div>
+  </div>
+  <script>
+    //게임 구조 관련
+    let str = `Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magni labore asperiores deserunt ut dolores corrupti architecto porro earum distinctio repellat ipsum ex mollitia delectus perspiciatis minus, magnam id minima fuga!`;
+    let wordArray = str.split(' ');
+    let leftWordCount = 0;
+
+    wordArray.forEach(word => {
+      makeWordSpan(word);
+    });
+
+    document.querySelector("button#delBtn").addEventListener("click", () => {
+      let targetWord = document.querySelector("input.userValue").value;
+      let words = document.querySelectorAll("span.word");
+      words.forEach(word => {
+        if (word == targetWord) {
+          word.remove();
+        }
+      })
+
+
+      document.querySelector("input.userValue").value = "";
+      document.querySelector("input.userValue").focus();
+    });
+
+    document.querySelector("input.userValue").addEventListener("keyup", event => {
+      if (event.keyCode === 13) {
+        event.preventDefault();
+        document.querySelector("button#delBtn").click();
+      }
+    });
+
+
+    function makeWordSpan(word) {
+      let wordSpan = document.createElement("span");
+      wordSpan.setAttribute("class", "word");
+      wordSpan.innerText = word;
+      document.querySelector("div.outer").appendChild(wordSpan);
+    }
+
+    // 게임 시작 관련
+    document.querySelector("button#startBtn").addEventListener("click", () => gameStart());
+
+    function gameStart() {
+      leftWordCount = wordArray.length;
+      console.log(leftWordCount);
+      document.querySelector("span.leftWord").innerHTML = leftWordCount;
+
+      document.querySelector("input.userValue").disabled = false;
+      document.querySelector("button#delBtn").disabled = false;
+
+      timerStart(60);
+    }
+
+    function timerStart(timeLeft) {
+      setInterval(() => {
+        document.querySelector("span.timer").innerHTML = timeLeft--;
+      }, 1000);
+    }
+
+
+
+  </script>
+</body>
+
+</html>

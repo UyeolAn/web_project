@@ -31,7 +31,7 @@ public class NoticeSelectController extends HttpServlet {
 		NoticeVO searchedVO = noticeService.noticeSelect(targetVO);
 		request.setAttribute("n", searchedVO);
 		
-		String page = "notice/noticeselect";
+		String page = "notice/noticeselect2";
 		ViewResolve.foward(request, response, page);
 	}
 

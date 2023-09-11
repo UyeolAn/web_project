@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Insert title here</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+</head>
+
+<body>
+  <div id="addMember">
+    <label>ID</label>
+    <input type="text" id="id">
+    <label>이름</label>
+    <input type="text" id="name">
+    <label>점수</label>
+    <input type="text" id="score">
+    <button id="addBtn">추가</button>
+  </div>
+  <br>
+  <br>
+  <div id="memberList">
+    <table border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>이름</th>
+          <th>점수</th>
+          <th><input type="checkbox" id="checkAll" /></th>
+        </tr>
+      </thead>
+      <tbody>
+        <!--Data...-->
+      </tbody>
+    </table>
+  </div>
+  <script>
+    // 초기 데이터
+    const members = [
+      { id: "user1", name: "Hong", score: 80 },
+      { id: "user2", name: "Park", score: 85 },
+      { id: "user3", name: "Hwang", score: 77 }
+    ];
+
+    // 초기 데이터 추가
+    members.forEach(member => {
+      $('tbody').append(
+        $('<tr />')
+          .append(`<td>${member.id}</td>`)
+          .append(`<td>${member.name}</td>`)
+          .append(`<td>${member.score}</td>`)
+          .append('<td><input type="checkbox" /></td>')
+      )
+    });
+
+    // 입력 데이터 추가버튼 이벤트
+    $('#addBtn').on('click', function (e) {
+      $('tbody').append(
+        $('<tr />')
+          .append($('<td />').text($('#id').val()))
+          .append($('<td />').text($('#name').val()))
+          .append($('<td />').text($('#score').val()))
+          .append('<td><input type="checkbox" /></td>')
+      );
+    });
+
+    // 전체선택 체크박스 이벤트
+    $('#checkAll').on('change', function (e) {
+        $('input[type="checkbox"]')
+          .prop('checked', $(e.currentTarget).is(':checked'));
+    });
+
+    // 각 체크박스에 걸리는 이벤트
+    $('tbody input[type="checkbox"]').on('change', function (e) {
+      let totalCnt = $('tbody input[type="checkbox"]').length;
+      let checkedCnt = $('tbody input[type="checkbox"]:checked').length;
+      if (totalCnt == checkedCnt) {
+        $('thead input[type="checkbox"]').prop('checked', true);
+      } else {
+        $('thead input[type="checkbox"]').prop('checked', false);
+      }
+    });
+  </script>
+</body>
+
+</html>

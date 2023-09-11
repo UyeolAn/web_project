@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Insert title here</title>
+  <style>
+    .center {
+      text-align: center;
+    }
+
+    .pagination {
+      display: inline-block;
+    }
+
+    .pagination a {
+      color: black;
+      float: left;
+      padding: 8px 16px;
+      text-decoration: none;
+      transition: background-color .3s;
+      border: 1px solid #ddd;
+      margin: 0 4px;
+    }
+
+    .pagination a.active {
+      background-color: #4CAF50;
+      color: white;
+      border: 1px solid #4CAF50;
+    }
+
+    .pagination a:hover:not(.active) {
+      background-color: #ddd;
+    }
+  </style>
+</head>
+
+<body>
+  <div align="center">
+    <div>
+      <select class="categorySelect">
+        <option value="전체보기">전체보기</option>
+      </select>
+    </div><br>
+    <div>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>카테고리</th>
+            <th>제목</th>
+            <th>작성일자</th>
+            <th>제공기관</th>
+          </tr>
+        </thead>
+        <tbody id="list">
+        </tbody>
+      </table>
+    </div><br>
+    <div class="center">
+      <div class="pagination">
+      </div>
+    </div>
+  </div>
+  <script>
+    let url = `https://apis.data.go.kr/1613000/covidItrstStatAnls/getCovidItrstStatList?serviceKey=rKGpXoBU7WASqNCuMCloCuWti0UZV0Kc3ZXftTMRa5T9DN9WkiTEKDV8ccdmkREVHRe62DyjOTLIu7IORhENag%3D%3D&pageNo=1&numOfRows=16`;
+
+    let dataList = [];
+    let selectedList = [];
+    let categories = [];
+    let currentPage = 1;
+
+    // 첫 로딩 시
+    fetch(url)
+      .then(response => response.json())
+      .then(json => {
+        dataList = json.data;
+        dataList.forEach(data => {
+          if (categories.indexOf(data["category"]) == -1) {
+            categories.push(data["category"]);
+          }
+        });
+
+        categories.forEach(category => {
+          let option = document.createElement("option");
+          option.setAttribute("value", category);
+          option.innerText = category;
+          document.querySelector("select.categorySelect").appendChild(option);
+        })
+        showPageList(dataList, 1); // 처음 로딩되면 1페이지를 보여줌
+        currentPage = 1;
+      });
+
+    // select 태그에 이벤트를 걸어줌
+    document.querySelector("select.categorySelect").addEventListener("change", elem => {
+      selectedList = [];
+      if (elem.target.value == "전체보기") {
+        dataList.forEach(data => {
+          selectedList.push(data);
+        });
+      } else {
+        dataList.forEach(data => {
+          if (data["category"] == elem.target.value) {
+            selectedList.push(data);
+          }
+        });
+      }
+      currentPage = 1;
+      showPageList(selectedList, 1);
+    });
+
+    // 페이징 함수
+    function showPageList(dataList, page) {
+      // 페이징된 리스트 출력
+      let start = (page - 1) * 5;
+      let end = (page * 5) < dataList.length ? (page * 5) : dataList.length;
+
+      document.querySelector("#list").innerHTML = "";
+      for (let i = start; i < end; i++) {
+        let tr = makeTr(dataList[i]);
+        document.querySelector("#list").appendChild(tr);
+      }
+
+      // 페이지 a태그 출력
+      let totalCount = dataList.length;
+
+      let endPage = Math.ceil(page / 2) * 2;
+      let startPage = endPage - (2 - 1);
+      let prev = startPage > 1;
+      let next = endPage < Math.ceil(totalCount / 5);
+
+      document.querySelector(".pagination").innerHTML = "";
+      if (prev) {
+        makePageAtag("&laquo", startPage - 1);
+      }
+      for (let i = startPage; i <= endPage; i++) {
+        makePageAtag(i, i);
+      }
+      if (next) {
+        makePageAtag("&raquo", endPage + 1);
+      }
+    }
+
+    // 데이터 레코드 생성 함수
+    function makeTr(data) {
+      let tr = document.createElement("tr");
+      ["category", "title", "regDate", "pvsnInst"].forEach(prop => {
+        let td = document.createElement("td");
+        td.innerText = data[prop];
+        tr.appendChild(td);
+      });
+      return tr;
+    }
+
+    // 페이지 a태그 생성 함수
+    function makePageAtag(inner, page) {
+      let atag = document.createElement("a");
+      atag.setAttribute("href", page);
+      if (page == currentPage) {
+        atag.setAttribute("class", "active");
+      }
+      atag.innerHTML = inner;
+      atag.addEventListener("click", elem => {
+        currentPage = page;
+        elem.preventDefault();
+        if (selectedList.length != 0) {
+          showPageList(selectedList, page);
+        } else {
+          showPageList(dataList, page);
+        }
+      });
+      document.querySelector(".pagination").appendChild(atag);
+    }
+  </script>
+</body>
+
+</html>

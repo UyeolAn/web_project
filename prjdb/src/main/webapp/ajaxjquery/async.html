@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Insert title here</title>
+</head>
+
+<body>
+  <script>
+    function syncFnc() {
+      let num = 10;
+      console.log(num);
+
+      num *= 2;
+      console.log(num);
+    }
+
+    function asynFnc() {
+      let friends = [];
+      setTimeout(() => {
+        friends.push({name: "안우열", phone: "010-4806-9966"});
+        console.log(friends);
+      }, 3000);
+      setTimeout(() => {
+        friends.push({name: "김륜형", phone: "010-5163-2028"});
+        console.log(friends);
+      }, 2000);
+      setTimeout(() => {
+        friends.push({name: "배승호", phone: "010-8014-2323"});
+        console.log(friends);
+      }, 1000);
+      setTimeout(() => {
+        friends.push({name: "김태현", phone: "010-3047-4211"});
+        console.log(friends);
+      }, 5000);
+    }
+
+    syncFnc();
+    asynFnc();
+  </script>
+</body>
+
+</html>
